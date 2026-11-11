@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Obra — Cebra</title>
+<meta name="description" content="Archivo de obra de Cecilia Braña Llanes. Diseño gráfico, ilustración y fotografía.">
+<link rel="stylesheet" href="styles.css?v=label-spacing"><script type="module" src="app.js?v=obra-scroll"></script>
+<link rel="stylesheet" href="mobile.css?v=obra-preview-align">
+</head>
+<body>
+<header><button id="home" class="bracket">Inicio</button><nav aria-label="Páginas"><span>Página</span><button class="bracket" data-page="bio">1</button><button class="bracket" data-page="obra" aria-current="page">2</button><button class="bracket" data-page="statement">3</button><button class="bracket" data-page="links">4</button></nav></header>
+<main>
+<section id="home-page" aria-labelledby="home-title" hidden>
+<h1 id="home-title" class="visually-hidden">Cecilia “Cebra” Braña Llanes</h1>
+<div id="home-blocks"></div>
+<p class="home-note">Mi pasatiempo favorito es la construcción de mi árbol genealógico. Estos son los apellidos de mis antepasados hasta la sexta generación. Es para mí un motivo de orgullo saber que hasta la fecha he podido encontrar los nombres y apellidos de ciento ocho antepasados hasta la sexta generación (solo me faltan siete: si tenés información sobre la familia Ottón, parientes de mi bisabuela Ángela Zulema Ottón, me haría muy feliz que te contactes conmigo para ayudarme a completar esos huecos). En adelante, los huecos son cada vez más: sólo he recolectado setenta y tres nombres completos y quinientos veinticuatro apellidos hasta la duodécima generación. De los cuatromil noventa y seis antepasados que todos tenemos hasta la duodécima generación, he podido recolectar los apellidos de seiscientos treinta y dos, un quince por ciento, y entre ellos, tengo los nombres completos de ciento ochenta y uno, apenas un cuatro por ciento. No es poca cosa. Tampoco es tanta. Pero me pareció divertido traerlo acá, porque no sé en qué otro contexto podría alardear de este logro.</p>
+</section>
+<section id="obra" aria-labelledby="title">
+<div class="meta obra-meta"><span>Página 2</span><span>Filtros</span><div class="filter"><button id="types-toggle" class="bracket" aria-expanded="false" aria-controls="types">Tipo de proyecto</button><div id="types" class="options" hidden></div></div><div class="filter"><button id="years-toggle" class="bracket" aria-expanded="false" aria-controls="years">Año</button><div id="years" class="options" hidden></div></div><button id="clear" class="bracket" hidden>Limpiar filtros</button></div>
+<h1 id="title">Obra</h1>
+<div id="projects"></div><p id="empty" role="status" hidden>No hay proyectos con esta combinación de filtros.</p>
+</section>
+<section id="bio-page" aria-labelledby="bio-title" hidden>
+<h1 id="bio-title" class="visually-hidden">Biografía, trayectoria, exposiciones y reconocimientos</h1>
+<div class="bio-meta bio-grid">
+<span>Desde</span><span class="bio-until">Hasta</span>
+<div class="bio-panel-tools">
+<button type="button" id="bio-prev" aria-label="Apartado anterior">&lt; <span>Anterior</span></button>
+<button type="button" id="bio-next" aria-label="Apartado siguiente"><span>Siguiente</span> &gt;</button>
+</div>
+<span id="bio-topic" aria-live="polite">Biografía</span>
+</div>
+<div class="bio-composition bio-grid">
+<div id="bio-panel" role="region" aria-labelledby="bio-topic" tabindex="0"></div>
+<div class="bio-display">
+<div class="bio-row bio-grid">
+<span class="bio-ink bio-from" aria-hidden="true">2003</span>
+<span class="bio-update">Algún día<br>la actualizaré :)</span>
+<span class="bio-ink bio-to" aria-hidden="true">2026</span>
+</div>
+<div class="bio-row bio-grid">
+<a class="bracket bio-illustrated" href="#bio-ilustrada">Ver mi pequeña biografía ilustrada</a>
+</div>
+<div class="bio-row bio-grid">
+<span class="bio-page-number">Página 1</span>
+</div>
+<div class="bio-row bio-grid">
+<span class="bio-ink bio-word-1" aria-hidden="true">Biografía,</span>
+<button class="bracket bio-jump bio-jump-1" type="button" data-bio-topic="0">Ver biografía</button>
+</div>
+<div class="bio-row bio-grid">
+<span class="bio-ink bio-word-2" aria-hidden="true">trayectoria,</span>
+<button class="bracket bio-jump bio-jump-2" type="button" data-bio-topic="1">Ver trayectoria</button>
+</div>
+<div class="bio-row bio-grid">
+<span class="bio-ink bio-word-3" aria-hidden="true">exposiciones</span>
+<button class="bracket bio-jump bio-jump-3" type="button" data-bio-topic="2">Ver exposiciones</button>
+</div>
+<div class="bio-row bio-grid">
+<span class="bio-ink bio-word-4" aria-hidden="true">y</span>
+<button class="bracket bio-jump bio-jump-4" type="button" data-bio-topic="3">Ver reconocimientos</button>
+</div>
+<div class="bio-row bio-grid">
+<span class="bio-ink bio-word-5" aria-hidden="true">reconocimientos</span>
+</div>
+<div class="bio-row bio-grid">
+<span class="bio-ink bio-word-6" aria-hidden="true">cebra</span>
+<span class="bio-copyright">©2026</span>
+<span class="bracket bio-cv" title="Currículum pendiente de adjuntar">Ver currículum</span>
+</div>
+</div>
+</div>
+</section>
+<section id="illustrated-page" aria-labelledby="illustrated-title" hidden>
+<h1 id="illustrated-title" class="visually-hidden">Mi pequeña biografía ilustrada</h1>
+<div class="illustrated-heading">
+<span style="grid-area:1/1/2/4">Cecilia Braña Llanes</span>
+<span style="grid-area:1/5">“Cebra”</span>
+<span class="illustrated-word" style="grid-area:2/1" aria-hidden="true">Mi pequeña</span>
+<span class="baseline-label" style="grid-area:2/7/3/9">Cuchilla de Machín</span>
+<p class="illustrated-credit">Realizada en el marco del curso Formación Artística Aplicada, Módulo N°2, Síntesis Visual, de la Licenciatura en Artes Visuales de la Universidad Católica del Uruguay.</p>
+<span class="illustrated-word mobile-only mobile-illustrated-bio" aria-hidden="true">biografía</span>
+<span class="illustrated-word mobile-only mobile-illustrated-art" aria-hidden="true">ilustrada</span>
+<span class="illustrated-word illustrated-desktop-word" style="grid-area:3/3;--start:2" aria-hidden="true">biografía ilustrada</span>
+<span class="baseline-label" style="grid-area:3/2">2003</span>
+<span class="baseline-label" style="grid-area:3/9">(2025)</span>
+</div>
+<figure class="illustrated-map" aria-label="Mundo Potolitis" tabindex="0">
+<div class="illustrated-art">
+<img src="assets/mundo-potolitis.png" width="1390" height="925" loading="lazy" alt="Mapa ilustrado de los primeros 22 años de Cecilia Braña Llanes, con lugares y escenas de su vida señalados en amarillo.">
+</div>
+</figure>
+</section>
+<section id="statement-page" aria-labelledby="statement-title" hidden>
+<div class="statement-page-number">Página 3</div>
+<h1 id="statement-title" class="visually-hidden">Declaración de artista</h1>
+<div class="statement-grid statement-composition">
+<span class="statement-word" style="grid-area:1/1/2/6" aria-hidden="true">Declaración</span>
+<span class="statement-word" style="grid-area:2/4/3/6" aria-hidden="true">de</span>
+<span class="statement-word" style="grid-area:3/5/4/7" aria-hidden="true">artista</span>
+<span class="baseline-label" style="grid-area:1/6/2/8">Licenciada en Artes Visuales</span>
+<span class="baseline-label" style="grid-area:1/8/2/10">Diplomada en Gestión Cultural</span>
+<span class="statement-right baseline-label" style="grid-area:1/10">Artista visual y gráfica</span>
+<span class="statement-top" style="grid-area:2/1">Montevideo</span>
+<span class="statement-top" style="grid-area:2/3">2026</span>
+<span class="baseline-label" style="grid-area:3/3/4/5">Cecilia Braña Llanes</span>
+<span class="baseline-label" style="grid-area:3/7">“Cebra”</span>
+<span class="statement-right baseline-label" style="grid-area:3/9/4/11">Cuchilla de Machín</span>
+<span class="statement-design" style="grid-area:4/2">Diseño gráfico</span>
+<span class="statement-photo" style="grid-area:4/5">Foto</span>
+<span class="statement-location" style="grid-area:4/9">Canelones, Uruguay</span>
+<span class="statement-right" style="grid-area:4/10">2003</span>
+<span class="statement-top statement-art" style="grid-area:5/7">Arte contemporáneo</span>
+<span style="grid-area:5/4">Ilustración</span>
+<span style="grid-area:5/6">Video</span>
+</div>
+<div class="statement-reading">
+<h2>Statement</h2>
+<p>Soy artista visual emergente y artista gráfica de profesión, pero éstas no son para mí dos facetas paralelas: abordo mis trabajos por encargo con el mismo entusiasmo y método que mi obra, porque también lo es. Una y otra conviven en mi trabajo diario y se nutren entre sí. He encontrado un territorio para mi desarrollo como artista gráfica en la escena emergente de la cultura local. Allí hallo la posibilidad de combinar las prácticas del diseño, ilustración y fotografía en la creación de piezas gráficas a la par que contribuyo a la visibilización de mis pares. En el plano más personal e íntimo, me he lanzado a la tarea de recoger las historias mínimas, cotidianas: la anécdota familiar y barrial tanto propia como ajena, en el entendimiento de que existe un valor casi patrimonial en estas historias, las que no pasan a la Historia, que merece ser preservado.</p>
+</div>
+<footer class="statement-grid statement-footer" aria-label="Enlaces de la declaración">
+<a href="#bio" class="bracket">Biografía</a>
+<a href="#obra" class="bracket">Obra</a>
+<a href="#links" class="bracket">Enlaces</a>
+<span class="statement-right">©2026</span>
+</footer>
+</section>
+<section id="links-page" aria-labelledby="links-title" hidden>
+<div class="links-page-number">Página 4</div>
+<div class="links-composition">
+<div class="links-row">
+<h1 id="links-title" class="links-large" style="grid-column:1" aria-label="Enlaces">Enlaces</h1>
+<span style="grid-column:4/6">Cecilia Braña Llanes</span>
+<span style="grid-column:7/9">Montevideo, Uruguay</span>
+</div>
+<div class="links-row">
+<span style="grid-column:1">Hablemos :)</span>
+<span style="grid-column:6/8">Licenciada en Artes Visuales</span>
+<span style="grid-column:8/10">Diplomada en Gestión Cultural</span>
+<span class="links-right" style="grid-column:10">Artista visual y gráfica</span>
+</div>
+<div class="links-row">
+<button type="button" class="links-large links-contact" style="grid-column:1" data-destination="https://www.instagram.com/cebrallanes/" aria-label="Mostrar enlace de Instagram">ig@cebrallanes</button>
+</div>
+<div class="links-row">
+<button type="button" class="links-large links-contact" style="grid-column:5;--start:4" data-destination="https://x.com/cebrallanes" aria-label="Mostrar enlace de X">tw@cebrallanes</button>
+<span style="grid-column:1">Diseño gráfico</span>
+<span style="grid-column:3">“Cebra”</span>
+</div>
+<div class="links-row">
+<button type="button" class="links-large links-contact" style="grid-column:3;--start:2" data-destination="mailto:ceciliabrana@gmail.com" data-address="&lt;a href=&quot;mailto:ceciliabrana@gmail.com&quot;&gt;mail-to-cecilia-brana&lt;/a&gt;" aria-label="Mostrar correo electrónico">ceciliabrana@gmail.com</button>
+<span style="grid-column:1">Ilustración</span>
+</div>
+<div class="links-row">
+<button type="button" class="links-large links-contact" style="grid-column:4;--start:3" data-destination="https://wa.me/59898400930" aria-label="Mostrar enlace de WhatsApp">(+598) 98 400 930</button>
+<span style="grid-column:1">Foto y video</span>
+</div>
+<div class="links-row">
+<button type="button" class="links-large links-contact" style="grid-column:1" data-destination="https://uy.linkedin.com/in/cecilia-bra%C3%B1a" data-address="https://uy.linkedin.com/in/cecilia-braña" aria-label="Mostrar enlace de LinkedIn">in/cecilia braña</button>
+</div>
+<div class="links-row">
+<button type="button" class="links-large links-contact links-spotify" style="grid-column:1/11" data-destination="https://open.spotify.com/playlist/4nlYxRtxFSGwoqVjUshDKX?si=KfORL6FVRwyXTqNCJPoMew&amp;pi=51jA5yDpTx6_j" data-address="https://open.spotify.com/playlist/tapa-final-final.jpg/" aria-label="Mostrar enlace de Spotify">spotify@cebrallanes</button>
+<span style="grid-column:1/3">Arte contemporáneo</span>
+</div>
+<div class="links-row">
+<button type="button" class="links-large links-contact" style="grid-column:3;--start:2" data-destination="https://youtube.com/playlist?list=PLAg1Cg8xccXCTS3Qn2mHgA-DK3Il3WeM_&amp;si=IZ2Ovmhtry6aY7KO" data-address="https://youtube.com/playlist/video-final-ahora-si.mp4/" aria-label="Mostrar enlace de YouTube">yt@cebrallanes</button>
+<span style="grid-column:1">©2026</span>
+<a href="#bio" class="bracket links-right" style="grid-column:8">Biografía</a>
+<a href="#obra" class="bracket links-right" style="grid-column:9">Obra</a>
+<a href="#statement" class="bracket links-right" style="grid-column:10">Declaración</a>
+</div>
+</div>
+<a id="links-contact-box" tabindex="-1" hidden></a>
+</section>
+</main>
+<footer><span>©2026</span><span>Cecilia Braña Llanes</span><span>Montevideo, Uruguay</span></footer>
+
+</body></html>
