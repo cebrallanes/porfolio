@@ -9,8 +9,17 @@ export function installMobileBounce(page, getProjects) {
  page.append(image);
  let x=10, y=80, vx=73, vy=91, last=0, frame=0;
  let current='';
+ const failed = new Set();
+ image.addEventListener('error', () => {
+  failed.add(current);
+  current = '';
+  image.hidden = true;
+ });
  function change() {
-  const urls = [...new Set(getProjects().map(project=>project.images[0]).filter(Boolean))];
+  const urls = [...new Set(getProjects().map(project => {
+   const cover = project.images[0];
+   return cover?.preview ?? cover?.url ?? cover;
+  }).filter(url => url && !failed.has(url)))];
   const alternatives=urls.filter(url=>url!==current);
   if (!alternatives.length) return;
   current=alternatives[Math.floor(Math.random()*alternatives.length)];
@@ -24,7 +33,7 @@ export function installMobileBounce(page, getProjects) {
    return;
   }
   if (!current) change();
-  image.hidden=!current;
+  image.hidden=!(current && image.complete && image.naturalWidth);
   const dt=Math.min((time-(last||time))/1000,.04);
   last=time;
   const maxX=Math.max(0,document.documentElement.clientWidth-image.offsetWidth);

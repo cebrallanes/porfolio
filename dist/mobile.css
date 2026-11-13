@@ -32,7 +32,7 @@
  header>nav[aria-label="Páginas"],
  .bio-meta>span,.bio-row>span:not(.bio-ink),.bio-toggle,.bio-panel-tools button,
  .statement-composition>span:not(.statement-word),.statement-footer>*,
- .illustrated-heading>span:not(.illustrated-word),.mobile-story-controls>*,.mobile-story h2,
+ .illustrated-heading>span:not(.illustrated-word),.mobile-story-controls>*,
  .links-row>span,.mobile-contact a,.home-view>footer>span{white-space:nowrap}
  .bio-view{height:100dvh}
  .bio-view>main{min-height:0}
@@ -62,7 +62,8 @@
  .bio-text-columns{column-count:1}
 
  .illustrated-view{height:auto;min-height:100dvh}
- #illustrated-page{height:auto;grid-template-rows:none;gap:10px}
+ .illustrated-view>main{display:flex;flex-direction:column}
+ #illustrated-page{height:auto;flex:1;grid-template-rows:auto auto 1fr;gap:10px}
  .illustrated-heading{gap:10px}
  .illustrated-word{translate:none}
  .illustrated-desktop-word{display:none}
@@ -71,16 +72,13 @@
  .illustrated-heading>span:nth-child(4){grid-area:2/8/3/11!important;justify-self:end}
  .illustrated-heading>span:nth-last-child(2){grid-area:3/1/4/3!important}
  .illustrated-heading>span:last-child{grid-area:4/10!important;justify-self:end}
- .illustrated-credit{grid-area:4/1/5/3;margin:0}
- .illustrated-map{height:calc((100vw - 20px) * 925 / 1390);touch-action:none;scrollbar-width:none}
+ .illustrated-credit{display:none}
+ .illustrated-map{width:100%;min-width:0;height:calc((100vw - 20px) * 925 / 1390);overflow:auto;touch-action:none;scrollbar-width:none}
  .illustrated-art{width:var(--map-zoom,100%)}
  .illustrated-hotspot,.illustrated-story{display:none!important}
- .mobile-map-zoom{text-align:right}
- .mobile-map-zoom button{border:1px solid currentColor;min-width:25px;min-height:22px;margin-left:10px}
- .mobile-story-controls{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
- .mobile-story-controls button{min-height:26px}
- .mobile-story{border:1px solid currentColor;padding:10px;min-height:100px}
- .mobile-story h2{font:inherit;margin:0 0 10px}
+ .mobile-story-controls{display:flex;justify-content:space-between;align-items:baseline;line-height:1;gap:10px;margin-bottom:calc(10px - var(--caption-descent,0px))}
+ .illustrated-view #illustrated-page>.mobile-map-stories:not([hidden]){display:flex;flex-direction:column}
+ .mobile-story{flex:1;border:1px solid currentColor;padding:0;min-height:100px}
  .mobile-story p{font-size:var(--medium);margin:0}
 
  .statement-page-number,.statement-reading h2{margin-bottom:10px}
@@ -121,7 +119,7 @@
  .project.active .more{align-self:start}
  .work-view .project .arrow{width:0}
  .work-view .project:is(.active,.scroll-preview) .arrow{width:.7em}
- .project .project-preview{left:calc((100% + var(--work-column-gap)) * 3 / 5);top:50%;width:auto;max-width:none;height:55.33px;aspect-ratio:auto;transform:translateY(-45%)}
+ .project .project-preview{right:auto;object-fit:cover;left:calc((100% + var(--work-column-gap)) * 3 / 5);top:50%;width:auto;max-width:none;height:55.33px;aspect-ratio:auto;transform:translateY(-45%)}
  .project:not(.active):has(.row-open:hover) .project-preview{opacity:0;transform:translateY(-45%)}
  .project.scroll-preview:not(.active) .project-preview,
  .project.scroll-preview:not(.active):has(.row-open:hover) .project-preview{

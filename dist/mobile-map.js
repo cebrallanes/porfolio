@@ -5,14 +5,13 @@ export function installMobileMap(map) {
  const story=document.createElement('section');
  story.className='mobile-only mobile-map-stories';
  story.setAttribute('aria-label','Relatos de Mundo Potolitis');
- story.innerHTML='<div class="mobile-story-controls"><button type="button">&lt; Anterior</button><span></span><button type="button">Siguiente &gt;</button></div><div class="mobile-story" aria-live="polite"><h2></h2><p></p></div>';
+ story.innerHTML='<div class="mobile-story-controls"><button type="button">&lt; Anterior</button><span></span><button type="button">Siguiente &gt;</button></div><div class="mobile-story" aria-live="polite"><p></p></div>';
  map.after(story);
  const [prev,next]=story.querySelectorAll('button');
  let index=0;
  function show(step) {
   index=(index+step+stories.length)%stories.length;
   story.querySelector('.mobile-story-controls span').textContent=`${index+1} / ${stories.length}`;
-  story.querySelector('h2').textContent=stories[index].label;
   story.querySelector('p').textContent=stories[index].text;
  }
  prev.onclick=()=>show(-1);
@@ -20,10 +19,6 @@ export function installMobileMap(map) {
  show(0);
 
  const art=map.querySelector('.illustrated-art');
- const controls=document.createElement('div');
- controls.className='mobile-only mobile-map-zoom';
- controls.innerHTML='<button type="button" aria-label="Alejar el mapa">−</button><button type="button" aria-label="Acercar el mapa">+</button>';
- map.before(controls);
  let zoom=1;
  function setZoom(value,x=map.clientWidth/2,y=map.clientHeight/2) {
   const next=Math.max(1,Math.min(6,value));
@@ -35,13 +30,17 @@ export function installMobileMap(map) {
   map.scrollLeft=left;
   map.scrollTop=top;
  }
- const [out,into]=controls.querySelectorAll('button');
- out.onclick=()=>setZoom(zoom/1.35);
- into.onclick=()=>setZoom(zoom*1.35);
+ // Double tap also works with a single finger or a mouse in the mobile layout.
+ map.addEventListener('dblclick', event => {
+  if (!mobileLayout.matches || map.hasAttribute('data-pinching')) return;
+  const rect = map.getBoundingClientRect();
+  setZoom(zoom > 1 ? 1 : 2, event.clientX - rect.left, event.clientY - rect.top);
+ });
  const points=new Map();
  const distance=([a,b])=>Math.hypot(b.x-a.x,b.y-a.y);
  map.addEventListener('pointerdown',e=>{
   if(!mobileLayout.matches || e.button!==0 || e.target.closest('button'))return;
+  if (!points.size) delete map.dataset.pinching;
   map.setPointerCapture(e.pointerId);
   points.set(e.pointerId,{x:e.clientX,y:e.clientY});
  });
@@ -52,6 +51,7 @@ export function installMobileMap(map) {
   points.set(e.pointerId,{x:e.clientX,y:e.clientY});
   const after=[...points.values()];
   if(after.length===2 && distance(before)>0){
+   map.dataset.pinching = "";
    const rect=map.getBoundingClientRect();
    const midpoint=(items,axis)=>(items[0][axis]+items[1][axis])/2;
    setZoom(zoom*distance(after)/distance(before),midpoint(before,'x')-rect.left,midpoint(before,'y')-rect.top);

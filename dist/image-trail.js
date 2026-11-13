@@ -35,17 +35,40 @@ export function installImageTrail(page, getProjects, {linkProjects = true} = {})
  let frame = 0;
  let lastTime = 0;
  let distance = 0;
- let projectIndex = 0;
+ let projectIndex = -1;
  let catalog;
  const trailProjects = [];
+
+ function coverSource(project) {
+  const cover = project.images[0];
+  return cover?.preview ?? cover?.url ?? cover;
+ }
+
+ function imageKey(project) {
+  const cover = project.images[0];
+  return (cover?.url ?? coverSource(project))?.split(/[?#]/, 1)[0];
+ }
+
+ function nextProject(projects, retained) {
+  const keys = new Set(retained.map(imageKey));
+  const ids = new Set(retained.map(project => project.id ?? project));
+  for (let offset = 1; offset <= projects.length; offset++) {
+   const index = (projectIndex + offset) % projects.length;
+   const candidate = projects[index];
+   const key = imageKey(candidate);
+   if (!key || ids.has(candidate.id ?? candidate) || keys.has(key)) continue;
+   projectIndex = index;
+   return candidate;
+  }
+ }
+
 
  function updateImages() {
   cars.forEach(({image}, index) => {
    const project = trailProjects[index];
    image.hidden = !project;
    if (!project) return;
-   const cover = project.images[0];
-   const source = cover.preview ?? cover.url ?? cover;
+   const source = coverSource(project);
    if (image.getAttribute('src') !== source) image.src = source;
   });
   if (!linkProjects) return;
@@ -114,22 +137,27 @@ export function installImageTrail(page, getProjects, {linkProjects = true} = {})
 
   if (catalog !== projects) {
    hide();
-   projectIndex = 0;
+   projectIndex = -1;
    catalog = projects;
   }
   if (!cursor) {
    for (const car of cars) Object.assign(car, {x, y});
-   trailProjects.push(projects[projectIndex]);
+   const first = nextProject(projects, []);
+   if (!first) return;
+   trailProjects.push(first);
    updateImages();
    trail.hidden = false;
   } else {
    distance += Math.hypot(x - cursor.x, y - cursor.y);
    if (distance >= imageChangeDistance) {
-    projectIndex = (projectIndex + 1) % projects.length;
     distance %= imageChangeDistance;
-    trailProjects.unshift(projects[projectIndex]);
-    if (trailProjects.length > trainLength) trailProjects.pop();
-    updateImages();
+    const retained = trailProjects.slice(0, trainLength - 1);
+    const next = nextProject(projects, retained);
+    if (next) {
+     trailProjects.unshift(next);
+     if (trailProjects.length > trainLength) trailProjects.pop();
+     updateImages();
+    }
    }
   }
   cursor = {x, y};

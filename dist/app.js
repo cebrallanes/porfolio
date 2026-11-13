@@ -1,8 +1,8 @@
 import {installWorkScrollPreview} from './work-scroll-preview.js';
 import {installLabelSpacing} from './label-spacing.js';
 import {mobileLayout, mobileType} from './mobile-layout.js';
-import {installMobileBounce} from './mobile-bounce.js';
-import {installMobileMap} from './mobile-map.js';
+import {installMobileBounce} from './mobile-bounce.js?v=ajustes-1';
+import {installMobileMap} from './mobile-map.js?v=ajustes-2';
 import {projects as sampleProjects} from './data.js?v=more-samples';
 import {sanityConfig} from './sanity-config.js?v=production-1';
 import {loadSanityProjects} from './sanity-projects.js';
@@ -12,7 +12,7 @@ import {initializeBio,resetBio,fitBioType} from './bio.js?v=mobile-3';
 import {installTextOverlap} from './type-overlap.js?v=mobile-1';
 import {installContactBoxes, renderMobileLinks} from './links.js?v=mobile-rows';
 import {installHomeEdgeScroll} from './home-edge-scroll.js?v=mobile-1';
-import {installImageTrail} from './image-trail.js?v=mobile-1';
+import {installImageTrail} from './image-trail.js?v=ajustes-1';
 import {statementPhotos} from './statement-photos.js?v=1';
 import {installIllustratedMap} from './illustrated-map.js';
 const $=s=>document.querySelector(s);
@@ -60,13 +60,13 @@ async function loadCatalog(){
  render();
  if(currentPage()==='obra') openLinkedProject();
 }
-function render(){const list=projects.filter(p=>matches(p,selected.types,selected.years));if(!list.some(p=>p.id===openId))openId=null;$('#projects').innerHTML=list.map(p=>{const active=openId===p.id,full=active&&mode==='full',slide=slides.get(p.id)||0,image=p.images[slide],cover=p.images[0];return `<article class="project${active?' active':''}" data-id="${escape(p.id)}"><div class="project-head"><button class="row-open" aria-expanded="${active}" aria-controls="detail-${escape(p.id)}" aria-label="${active?'Cerrar':'Abrir imagen de'} ${escape(p.title)}"><span class="project-name"><span class="arrow" aria-hidden="true">&gt;</span>${escape(p.title)}</span><span class="project-type">${escape(p.type)}</span><span class="project-year">${p.year}</span><span class="project-client">${escape(p.client)}</span></button><button class="more bracket" aria-expanded="${full}" aria-controls="detail-${escape(p.id)}">${full?'Ver menos':'Ver más'}</button></div>${active?`<div class="detail" id="detail-${escape(p.id)}"><div class="media"><img src="${escape(image.url ?? image)}" alt="${escape(image.alt ?? `Composición gráfica de muestra ${slide+1}`)}" width="600" height="760">${p.images.length>1?`<div class="gallery-controls"><button class="prev" aria-label="Imagen anterior" >&lt; Anterior</button><span class="count">${slide+1} / ${p.images.length}</span><button class="next" aria-label="Imagen siguiente" >Siguiente &gt;</button></div>`:''}</div>${full?`<div class="description"><p>${escape(p.description).replace(/\r?\n/g,'<br>')}</p><small>${escape(p.credits)}</small></div>`:''}</div>`:`<img class="project-preview" src="${escape(cover.preview ?? cover)}" alt="" loading="lazy" width="120" height="160">`}</article>`;}).join('');const empty=$('#empty');
+function render(){const list=projects.filter(p=>matches(p,selected.types,selected.years));if(!list.some(p=>p.id===openId))openId=null;$('#projects').innerHTML=list.map(p=>{const active=openId===p.id,full=active&&mode==='full',hasText=Boolean(p.description?.trim() || p.credits?.trim()),expanded=active&&(full||!hasText),slide=slides.get(p.id)||0,image=p.images[slide],cover=p.images[0];return `<article class="project${active?' active':''}" data-id="${escape(p.id)}"><div class="project-head"><button class="row-open" aria-expanded="${active}" aria-controls="detail-${escape(p.id)}" aria-label="${active?'Cerrar':'Abrir imagen de'} ${escape(p.title)}"><span class="project-name"><span class="arrow" aria-hidden="true">&gt;</span>${escape(p.title)}</span><span class="project-type">${escape(p.type)}</span><span class="project-year">${p.year}</span><span class="project-client">${escape(p.client)}</span></button><button class="more bracket" aria-expanded="${expanded}" aria-controls="detail-${escape(p.id)}">${expanded?'Ver menos':'Ver más'}</button></div>${active?`<div class="detail" id="detail-${escape(p.id)}"><div class="media"><img src="${escape(image.url ?? image)}" alt="${escape(image.alt ?? `Composición gráfica de muestra ${slide+1}`)}" width="600" height="760">${p.images.length>1?`<div class="gallery-controls"><button class="prev" aria-label="Imagen anterior" >&lt; Anterior</button><span class="count">${slide+1} / ${p.images.length}</span><button class="next" aria-label="Imagen siguiente" >Siguiente &gt;</button></div>`:''}</div>${full&&hasText?`<div class="description"><p>${escape(p.description).replace(/\r?\n/g,'<br>')}</p><small>${escape(p.credits)}</small></div>`:''}</div>`:`<img class="project-preview" src="${escape(cover.preview ?? cover.url ?? cover)}" alt="" loading="lazy" width="120" height="160">`}</article>`;}).join('');const empty=$('#empty');
  empty.hidden=list.length>0;
  if(!empty.hidden){
   const messages={idle:'Cargando proyectos…',loading:'Cargando proyectos…',error:'No se pudieron cargar los proyectos. Volvé a abrir Obra para reintentar.'};
   empty.textContent=messages[catalogStatus] ?? (projects.length ? 'No hay proyectos con esta combinación de filtros.' : 'Todavía no hay proyectos publicados.');
  }const filtered=selected.types.size+selected.years.size>0;$('#clear').hidden=!filtered;}
-$('#projects').addEventListener('click',e=>{const button=e.target.closest('button'),article=e.target.closest('.project');if(!button||!article)return;const id=article.dataset.id,p=projects.find(p=>p.id===id);if(!p)return;let focusClass;if(button.matches('.row-open')){openId=openId===id?null:id;mode='image';focusClass='.row-open';}else if(button.matches('.more')){if(openId===id&&mode==='full')openId=null;else{openId=id;mode='full';}focusClass='.more';}else if(button.matches('.prev,.next')){const next=((slides.get(id)||0)+(button.matches('.next')?1:-1)+p.images.length)%p.images.length;slides.set(id,next);focusClass=button.matches('.next')?'.next':'.prev';}render();const focus=$(`[data-id="${CSS.escape(id)}"] ${focusClass}`);if(focus&&!focus.disabled)focus.focus({preventScroll:true});});
+$('#projects').addEventListener('click',e=>{const button=e.target.closest('button'),article=e.target.closest('.project');if(!button||!article)return;const id=article.dataset.id,p=projects.find(p=>p.id===id);if(!p)return;let focusClass;if(button.matches('.row-open')){openId=openId===id?null:id;mode='image';focusClass='.row-open';}else if(button.matches('.more')){if(openId===id&&(mode==='full'||!(p.description?.trim() || p.credits?.trim())))openId=null;else{openId=id;mode='full';}focusClass='.more';}else if(button.matches('.prev,.next')){const next=((slides.get(id)||0)+(button.matches('.next')?1:-1)+p.images.length)%p.images.length;slides.set(id,next);focusClass=button.matches('.next')?'.next':'.prev';}render();const focus=$(`[data-id="${CSS.escape(id)}"] ${focusClass}`);if(focus&&!focus.disabled)focus.focus({preventScroll:true});});
 $('#clear').addEventListener('click',()=>{selected.types.clear();selected.years.clear();document.querySelectorAll('.options input').forEach(i=>i.checked=false);render();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.options').forEach(el=>{el.hidden=true;$(`#${el.id}-toggle`).setAttribute('aria-expanded','false');});}});
 const pageTitles={inicio:'Inicio',bio:'Biografía','bio-ilustrada':'Mi pequeña biografía ilustrada',obra:'Obra',statement:'Declaración de artista',links:'Enlaces'};
@@ -85,7 +85,10 @@ function navigate(page){
  $('#obra').hidden=page!=='obra';
  $('#bio-page').hidden=!bio;
  $('#illustrated-page').hidden=!illustrated;
- if(illustrated)$('.illustrated-map').scrollTop=0;
+ if(illustrated){
+  $('.illustrated-map').scrollTop=0;
+  setCaptionDescent($('.mobile-story-controls'));
+ }
  $('#statement-page').hidden=!statement;
  $('#links-page').hidden=page!=='links';
  document.querySelectorAll('header [data-page]').forEach(b=>{
