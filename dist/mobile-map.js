@@ -30,16 +30,26 @@ export function installMobileMap(map) {
   map.scrollLeft=left;
   map.scrollTop=top;
  }
- // Double tap also works with a single finger or a mouse in the mobile layout.
+ // Double click or double tap zooms around the selected point.
  map.addEventListener('dblclick', event => {
-  if (!mobileLayout.matches || map.hasAttribute('data-pinching')) return;
+  if (map.hasAttribute('data-pinching')) return;
+  event.preventDefault();
   const rect = map.getBoundingClientRect();
   setZoom(zoom > 1 ? 1 : 2, event.clientX - rect.left, event.clientY - rect.top);
  });
+ // Trackpad pinch and Ctrl + wheel zoom the map instead of the whole page.
+ map.addEventListener('wheel', event => {
+  if (mobileLayout.matches || !(event.ctrlKey || event.metaKey)) return;
+  event.preventDefault();
+  const rect = map.getBoundingClientRect();
+  const pixels = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? map.clientHeight : 1);
+  setZoom(zoom * Math.exp(-pixels * 0.01), event.clientX - rect.left, event.clientY - rect.top);
+ }, {passive: false});
  const points=new Map();
  const distance=([a,b])=>Math.hypot(b.x-a.x,b.y-a.y);
  map.addEventListener('pointerdown',e=>{
-  if(!mobileLayout.matches || e.button!==0 || e.target.closest('button'))return;
+  if(e.button!==0 || e.target.closest('button, .illustrated-story'))return;
+  if(!mobileLayout.matches && zoom===1)return;
   if (!points.size) delete map.dataset.pinching;
   map.setPointerCapture(e.pointerId);
   points.set(e.pointerId,{x:e.clientX,y:e.clientY});

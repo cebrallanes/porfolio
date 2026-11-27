@@ -1,20 +1,20 @@
 import {installWorkScrollPreview} from './work-scroll-preview.js';
 import {installLabelSpacing} from './label-spacing.js';
 import {mobileLayout, mobileType} from './mobile-layout.js';
-import {installMobileBounce} from './mobile-bounce.js?v=ajustes-1';
-import {installMobileMap} from './mobile-map.js?v=ajustes-2';
+import {installMobileBounce} from './mobile-bounce.js?v=carga-1';
+import {installMobileMap} from './mobile-map.js?v=desktop-zoom-1';
 import {projects as sampleProjects} from './data.js?v=more-samples';
 import {sanityConfig} from './sanity-config.js?v=production-1';
 import {loadSanityProjects} from './sanity-projects.js';
-import {renderHome} from './home.js?v=label-spacing';
+import {renderHome, startHomeEntrance} from './home.js?v=carga-1';
 import {fitLargeInk, setCaptionDescent} from './type-ink.js';
-import {initializeBio,resetBio,fitBioType} from './bio.js?v=mobile-3';
+import {initializeBio,resetBio,fitBioType} from './bio.js?v=mobile-panel-4';
 import {installTextOverlap} from './type-overlap.js?v=mobile-1';
 import {installContactBoxes, renderMobileLinks} from './links.js?v=mobile-rows';
 import {installHomeEdgeScroll} from './home-edge-scroll.js?v=mobile-1';
 import {installImageTrail} from './image-trail.js?v=ajustes-1';
 import {statementPhotos} from './statement-photos.js?v=1';
-import {installIllustratedMap} from './illustrated-map.js';
+import {installIllustratedMap} from './illustrated-map.js?v=desktop-zoom-1';
 const $=s=>document.querySelector(s);
 let projects = sanityConfig.projectId ? [] : sampleProjects;
 let catalogStatus = sanityConfig.projectId ? 'idle' : 'ready';
@@ -189,3 +189,49 @@ installImageTrail($('#statement-page'), () => statementTrail, {linkProjects: fal
 
 installMobileBounce($('#home-page'),()=>projects);
 installMobileBounce($('#statement-page'),()=>statementTrail);
+
+startHomeEntrance();
+
+
+// Move the mobile reading group together to use the space above the footer.
+const statementPage = $('#statement-page');
+function fitMobileStatement() {
+ if (!mobileLayout.matches) {
+  statementPage.style.removeProperty('--statement-fill');
+  return;
+ }
+ if (statementPage.hidden) return;
+ const currentFill = parseFloat(getComputedStyle(statementPage).getPropertyValue('--statement-fill')) || 0;
+ const footerBottom = $('.statement-footer').getBoundingClientRect().bottom;
+ const bottomPadding = parseFloat(getComputedStyle(document.body).paddingBottom) || 0;
+ const fill = Math.max(0, innerHeight - bottomPadding - footerBottom + currentFill);
+ if (Math.abs(fill - currentFill) > 0.5) statementPage.style.setProperty('--statement-fill', `${fill}px`);
+}
+const statementSize = new ResizeObserver(fitMobileStatement);
+for (const element of [statementPage, $('.statement-composition'), $('.statement-reading'), $('.statement-footer')]) statementSize.observe(element);
+window.addEventListener('resize', fitMobileStatement, {passive: true});
+window.addEventListener('hashchange', () => requestAnimationFrame(fitMobileStatement));
+mobileLayout.addEventListener('change', fitMobileStatement);
+fitMobileStatement();
+
+
+const mobileLinks = $('.links-mobile-composition');
+function fitMobileLinks() {
+ if (!mobileLayout.matches) {
+  mobileLinks.style.removeProperty('--links-fill');
+  return;
+ }
+ if ($('#links-page').hidden) return;
+ const currentFill = parseFloat(getComputedStyle(mobileLinks).getPropertyValue('--links-fill')) || 0;
+ const footerBottom = $('.links-mobile-footer').getBoundingClientRect().bottom;
+ const bottomPadding = parseFloat(getComputedStyle(document.body).paddingBottom) || 0;
+ const fill = Math.max(0, innerHeight - bottomPadding - footerBottom + currentFill);
+ if (Math.abs(fill - currentFill) > 0.5) mobileLinks.style.setProperty('--links-fill', `${fill}px`);
+}
+const mobileLinksSize = new ResizeObserver(fitMobileLinks);
+mobileLinksSize.observe(mobileLinks);
+for (const row of mobileLinks.children) mobileLinksSize.observe(row);
+window.addEventListener('resize', fitMobileLinks, {passive: true});
+window.addEventListener('hashchange', () => requestAnimationFrame(fitMobileLinks));
+mobileLayout.addEventListener('change', fitMobileLinks);
+fitMobileLinks();

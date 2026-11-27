@@ -225,7 +225,7 @@ header{display:flex;align-items:baseline;justify-content:space-between;font-size
  overscroll-behavior:contain;
 }
 .illustrated-map img{display:block;width:100%;height:auto}
-.illustrated-art{position:relative;isolation:isolate}
+.illustrated-art{position:relative;isolation:isolate;width:var(--map-zoom,100%)}
 .illustrated-hotspot{position:absolute;cursor:pointer}
 .illustrated-hotspot:focus-visible{z-index:1;outline-offset:-3px}
 .illustrated-hotspot:focus-visible[style*="clip-path"]{background:#3d3d3d24}
