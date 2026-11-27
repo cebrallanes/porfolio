@@ -60,7 +60,8 @@ export function installIllustratedMap(map) {
   const x = (anchor[0] - artwork.left) / artwork.width * art.clientWidth;
   const y = (anchor[1] - artwork.top) / artwork.height * art.clientHeight;
   card.style.maxHeight = `${map.clientHeight}px`;
-  card.style.left = `${Math.min(x, art.clientWidth - card.offsetWidth)}px`;
+  card.style.maxWidth = `${map.clientWidth}px`;
+  card.style.left = `${Math.max(map.scrollLeft, Math.min(x, map.scrollLeft + map.clientWidth - card.offsetWidth))}px`;
   card.style.top = `${Math.max(map.scrollTop, Math.min(y, map.scrollTop + map.clientHeight - card.offsetHeight))}px`;
  }
 

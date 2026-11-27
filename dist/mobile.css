@@ -56,8 +56,10 @@
  .bio-inline-open .bio-panel-tools{display:flex;flex:none;justify-content:space-between;gap:10px;margin-block-start:10px}
  .bio-inline .bio-panel-tools button{gap:10px}
  #bio-panel{flex:none;height:var(--bio-panel-height,64px);font-size:var(--medium);line-height:1.08}
- .bio-inline:not(.bio-inline-open) #bio-panel{overflow:hidden;pointer-events:none}
+ .bio-inline:not(.bio-inline-open) #bio-panel{overflow:hidden;cursor:pointer}
  #bio-panel p{width:auto;margin:0 0 10px;text-align:justify;text-indent:10px}
+ /* Scrollable paragraphs keep normal ink, independent of title overlap masks. */
+ #bio-panel p.type-overlap{color:#3d3d3d;background:none;background-clip:border-box}
  #bio-panel .bio-text-break{margin-top:10px}
  .bio-text-columns{column-count:1}
 
@@ -81,6 +83,8 @@
  .mobile-story{flex:1;border:1px solid currentColor;padding:0;min-height:100px}
  .mobile-story p{font-size:var(--medium);margin:0}
 
+ .statement-view{min-height:100dvh}
+ #statement-page{--statement-fill:0px}
  .statement-page-number,.statement-reading h2{margin-bottom:10px}
  .statement-grid{column-gap:10px}
  .statement-composition{grid-template-rows:repeat(3,auto) repeat(2,34px);row-gap:10px}
@@ -89,9 +93,10 @@
  .statement-composition>.statement-photo{grid-column:3!important}
  .statement-composition>.statement-location{grid-column:8/10!important;justify-self:end;text-align:right}
  .statement-composition>.statement-art{grid-column:5/7!important}
- .statement-reading{margin-top:38px}
+ .statement-composition>span:not(.statement-word){position:relative;top:var(--statement-fill)}
+ .statement-reading{margin-top:calc(38px + var(--statement-fill))}
  .statement-reading p{font-size:var(--medium);text-align:justify}
- .statement-footer{padding-top:24px;gap:10px}
+ .statement-footer{margin-top:0;padding-top:10px;gap:10px}
 
  .work-view{min-height:100dvh;--row:16px;--work-column-gap:10px}
  .work-view>main{padding-bottom:30px}
@@ -142,8 +147,15 @@
  }
  .links-mobile-composition [data-end]>.links-large{justify-self:end}
  .links-mobile-composition .links-caption-top{align-self:start;margin:0}
- .links-mobile-intro{margin-top:27px}
- .links-mobile-footer{margin-top:auto;padding-block-start:25px}
+ .links-mobile-composition{--links-fill:0px}
+ .links-mobile-composition>.links-row:first-child>span:last-child{
+  position:relative;top:calc((var(--links-fill) + 30px) / 3)
+ }
+ .links-mobile-intro>span:nth-child(2){
+  position:relative;top:calc(-1 * (var(--links-fill) + 30px) / 3)
+ }
+ .links-mobile-intro{margin-top:calc(27px + var(--links-fill))}
+ .links-mobile-footer{margin-top:0;padding-block-start:10px}
  .links-mobile-footer a{text-decoration:none;justify-self:start}
  .links-mobile-footer .links-right{justify-self:end}
  #links-contact-box{font-size:16px;max-width:calc(100vw - 20px);padding:0;white-space:normal}

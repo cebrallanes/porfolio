@@ -74,6 +74,9 @@ function placePanel() {
  if (!mobileLayout.matches) {
   composition.prepend(panel);
   panel.tabIndex = 0;
+  panel.setAttribute('role', 'region');
+  panel.removeAttribute('aria-label');
+  panel.removeAttribute('aria-expanded');
   panel.style.removeProperty('--bio-panel-height');
   meta.append(tools, topicLabel);
   inline.remove();
@@ -85,7 +88,15 @@ function placePanel() {
  inline.classList.toggle('bio-inline-open', isOpen);
  toggle.textContent = isOpen ? 'Cerrar' : 'Abrir';
  toggle.setAttribute('aria-expanded', String(isOpen));
- panel.tabIndex = isOpen ? 0 : -1;
+ panel.tabIndex = 0;
+ panel.setAttribute('role', isOpen ? 'region' : 'button');
+ if (isOpen) {
+  panel.removeAttribute('aria-label');
+  panel.removeAttribute('aria-expanded');
+ } else {
+  panel.setAttribute('aria-label', 'Abrir biografía');
+  panel.setAttribute('aria-expanded', 'false');
+ }
  inline.append(topicLabel, panel, tools);
  sizeMobilePanel();
 }
@@ -138,6 +149,21 @@ export function initializeBio() {
   else selectTopic(0);
   toggle.focus({preventScroll: true});
  });
+ panel.addEventListener('click', () => {
+  if (mobileLayout.matches && !isOpen) selectTopic(0);
+ });
+ panel.addEventListener('keydown', event => {
+  if (!mobileLayout.matches || isOpen || !['Enter', ' '].includes(event.key)) return;
+  event.preventDefault();
+  selectTopic(0);
+ });
+ document.addEventListener('click', event => {
+  if (!mobileLayout.matches || page.hidden || !isOpen) return;
+  if (inline.contains(event.target)) return;
+  // Topic buttons must still select their section when the panel is open.
+  if (event.target.closest('[data-bio-topic], .bio-hit')) return;
+  resetBio();
+ }, {capture: true});
  for (const [selector,index] of [['.bio-word-1',0],['.bio-word-2',1],['.bio-word-3',2],['.bio-word-5',3]]) {
   const word=page.querySelector(selector);
   const button=document.createElement('button');

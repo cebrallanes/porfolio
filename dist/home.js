@@ -199,3 +199,28 @@ export function renderHome(){
  observer.observe(target);
  homeObserver=observer;
 }
+
+
+export async function startHomeEntrance() {
+ const root = document.documentElement;
+ await document.fonts.ready;
+ await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+ const page = document.querySelector('#home-page');
+ const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+ if (page.hidden || reduced.matches) {
+  root.classList.remove('booting');
+  return;
+ }
+ root.classList.add('home-entering');
+ root.classList.remove('booting');
+ let start;
+ function reveal(time) {
+  start ??= time;
+  const rows = [...page.querySelectorAll('.home-row')];
+  const count = page.hidden || reduced.matches ? rows.length : Math.floor((time - start) / 32) + 1;
+  for (const row of rows.slice(0, count)) row.classList.add('home-revealed');
+  if (count < rows.length) requestAnimationFrame(reveal);
+  else root.classList.remove('home-entering');
+ }
+ requestAnimationFrame(reveal);
+}
