@@ -131,7 +131,7 @@
   opacity:1;transform:translateY(-50%)
  }
  .project .detail{display:block;padding:10px 0}
- .project .description{padding:10px 0 0;font-size:var(--row)}
+ .project .description{padding:10px 0 0;font-size:var(--small)}
  .project .media img{height:auto}
  .project .gallery-controls{margin-top:10px}
  .links-view{min-height:100dvh}
